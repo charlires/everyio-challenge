@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDirs": [
+      "src"
+    ],
+    "outDir": "dist",
+    "lib": [
+      "es2020",
+      "dom",
+      "esnext",
+      "es2018"
+    ],
+    "target": "es2020",
+    "module": "CommonJS",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": [
+      "node"
+    ],
+    // "paths": {
+    //   "@service/*": [
+    //     "./src/services/*"
+    //   ],
+    //   "@app/*": [
+    //     "./src/*"
+    //   ]
+    // },
+  },
+  // "include": [
+  //   "src",
+  // ],
+  // "ts-node": {
+  //   "require": [
+  //       "tsconfig-paths/register"
+  //   ]
+  // }
+}
