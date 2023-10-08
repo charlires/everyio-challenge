@@ -16,7 +16,7 @@ docker-compose up
 ### Using NodeJS CLI
 To run this project you need to have nodejs18 installed and mongodb running in your local computer
 
-```
+```sh
 npm i
 npm run build
 npm start
@@ -34,20 +34,26 @@ https://docs.docker.com/get-docker/
 
 In vscode open your command palette and run `Dev Containers: Reopen in Container` and wait for it to finish 
 
-Use the same commands as for NodeJS CLI
+Use the same commands as for NodeJS CLI inside de devcontainer
 
 reference: https://code.visualstudio.com/docs/devcontainers/containers 
 
 ## General Notes
 
+### GraphQL 
+
+### Unit tests
+For time contrains only unittest for the busines logic have been inplemented
+you can find them in [resolver.test.ts](src/resolver.test.ts)
+
 ### Authentication
-For simplicity in this challenge I avoided doing authentication and jwt token validation
-When the docker-compose runs I create 3 users with the following email and password
+For simplicity in this challenge authentication and jwt token validation was omited
+When the docker-compose runs 3 users are created with the following email and role
 - carlos@every.io - MEMBER
 - jose@every@io - MEMBER
 - admin@every.io - MEMBER
 
-This users are created then the mongodb container runs for the first time
+these users are created when the mongodb container runs for the first time
 see: mongo-init.js
 
 # TODOs, Improvements, Most have:
