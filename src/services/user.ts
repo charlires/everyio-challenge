@@ -1,14 +1,8 @@
-import { PrismaClient, User } from '@prisma/client';
-
-const prisma = new PrismaClient()
+import { User, UserModel } from "../schemas/schemas";
 
 export default class UserService {
 
     public getById(email: string): Promise<User> {
-        return prisma.user.findFirst({
-            where: {
-                email: email
-            }
-        })
+        return UserModel.findOne({ 'email': email })
     }
 }

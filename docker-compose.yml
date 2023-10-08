@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  node:
+    restart: always
+    build: .
+    ports:
+      - 4000:4000
+    environment:
+      MONGODB_HOST: db
+    
+  db:
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment: 
+      MONGO_INITDB_DATABASE: tasks
+
+# delete volume 
+volumes:
+  mongodb:

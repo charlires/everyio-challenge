@@ -1,26 +1,25 @@
-import { Column, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient()
+import { Column, ColumnModel } from '../schemas/schemas';
 
 export default class ColumnService {
 
-    public findAll(): Promise<Array<Column>> {
-        return prisma.column.findMany({ include: { tasks: true } })
+    public async findAll(): Promise<Array<Column>> {
+        return ColumnModel.find().populate('tasks')//.exec()
     }
 
     public add(colunm: Column): Promise<Column> {
-        return prisma.column.create({ data: colunm })
+
+        return new ColumnModel({ createdAt: new Date(), ...colunm }).save()
     }
 
-    public update(id: string, column: { name: string }): Promise<Column> {
-        return prisma.column.update({
-            where: {
-                id: id,
-            },
-            data: {
-                name: column.name
-            }
+    public async update(id: string, column: { name: string }): Promise<Column> {
+
+        const res = await ColumnModel.updateOne({
+            title: column.name,
+        }, {
+            '_id': id
         })
+        if (res.modifiedCount === 1) {
+            return ColumnModel.findById(id)
+        }
     }
-
 }

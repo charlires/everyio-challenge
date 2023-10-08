@@ -1,5 +1,3 @@
-import { PrismaClient } from '@prisma/client';
-
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { startStandaloneServer } from '@apollo/server/standalone';
@@ -7,17 +5,21 @@ import { GraphQLError } from 'graphql';
 
 import logger from './logger';
 
+import mongoose from 'mongoose';
 import { typeDefs } from './graphql.schema';
 import MainResolver, { ErrorCode } from './resolver';
 import ColumnService from './services/column';
 import TaskService from './services/task';
 import UserService from './services/user';
 
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-})
-
 async function main() {
+    try {
+
+        await mongoose.connect(`mongodb://${process.env.MONGODB_HOST}/tasks`);
+        mongoose.set('debug', true);
+    } catch (e) {
+        logger.error(e)
+    }
 
     const taskService = new TaskService()
     const columnService = new ColumnService()
@@ -96,5 +98,5 @@ main()
         process.exit(1)
     })
     .finally(async () => {
-        await prisma.$disconnect()
+        // mongoose.disconnect()
     })

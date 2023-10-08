@@ -1,6 +1,6 @@
-import { Column, Task, TaskStatus, User, UserRole } from '@prisma/client';
 import { GraphQLError } from 'graphql';
 
+import { Column, Task, TaskStatus, User, UserRole } from './schemas/schemas';
 import ColumnService from './services/column';
 import TaskService from './services/task';
 
@@ -44,7 +44,7 @@ export default class MainResolver {
 
         if (!args.task.title) throw errors.titleExpected;
         if (!args.task.description) throw errors.descriptionExpected;
-        return this.taskService.add({ owner: ctx.user.id, ...args.task })
+        return this.taskService.add({ owner: ctx.user.id, createdAt: new Date(), ...args.task })
     }
 
     public updateTask = async (root, args: {
@@ -63,7 +63,7 @@ export default class MainResolver {
         if (ctx.user.role === UserRole.ADMIN) {
             return this.taskService.findAll(args.status)
         } else {
-            return this.taskService.findByOwner(ctx.user.id, args.status)
+            return this.taskService.findByOwner(ctx.user._id, args.status)
         }
     }
 
@@ -91,12 +91,13 @@ export default class MainResolver {
     public moveToColumn = async (root, args: {
         id: string,
         columnId: string,
-    }, ctx): Promise<Task> => {
+    }, ctx): Promise<boolean> => {
 
         const task = await this.taskService.getById(args.id)
         if (!isOwner(ctx.user, task)) throw errors.invalidOwner
         if (task.status == TaskStatus.ARCHIVED) throw errors.taskIsArchived
-        return this.taskService.moveToColumn(args.id, args.columnId)
+        const column = await this.taskService.moveToColumn(args.id, args.columnId)
+        return !!column
     }
 
     public findAllColumns = async (root, args, ctx): Promise<Array<Column>> => {
@@ -107,7 +108,7 @@ export default class MainResolver {
             return columns
         }
         return columns.map((column) => {
-            column['tasks'] = column['tasks'].filter((task) => isOwner(ctx.user, task))
+            column['tasks'] = column['tasks'].filter((task: Task) => isOwner(ctx.user, task))
             return column
         })
     }

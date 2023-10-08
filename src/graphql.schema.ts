@@ -11,6 +11,7 @@ type Task {
     description: String
     status: TaskStatus
     createdAt: String
+    archivedAt: String 
     column: String
     owner: String
 }
@@ -46,7 +47,7 @@ type Mutation {
     updateTask(id: String!, task: TaskInput!): Task
     updateTaskStatus(id: String!, status: TaskStatus!): Task 
     archiveTask(id: String!): Task
-    moveToColumn(id: String!, columnId: String!): Task
+    moveToColumn(id: String!, columnId: String!): Boolean
 
     addColumn(column: ColumnInput!): Column
     # update column name

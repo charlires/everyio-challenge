@@ -15,8 +15,7 @@
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"mongodb.mongodb-vscode",
-				"Prisma.prisma"
+				"mongodb.mongodb-vscode"
 			]
 		}
 	},

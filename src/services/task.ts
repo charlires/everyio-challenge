@@ -1,6 +1,4 @@
-import { PrismaClient, Task, TaskStatus } from '@prisma/client';
-
-const prisma = new PrismaClient()
+import { Column, ColumnModel, Task, TaskModel, TaskStatus } from '../schemas/schemas';
 
 export default class TaskService {
 
@@ -8,93 +6,71 @@ export default class TaskService {
         // initial status is always TODO
         // colunm can be empty
         task.status = TaskStatus.TODO
-        return prisma.task.create({ data: task })
+        return new TaskModel(task).save()
     }
 
     public async update(id: string, task: { title: string, description: string }): Promise<Task> {
-        return prisma.task.update({
-            where: {
-                id: id,
-            },
-            data: {
-                title: task.title,
-                description: task.description,
-            }
+        const res = await TaskModel.updateOne({
+            '_id': id
+        }, {
+            title: task.title,
+            description: task.description
         })
+        if (res.modifiedCount === 1) {
+            return TaskModel.findById(id)
+        }
     }
 
     public async getById(id: string): Promise<Task> {
-        return prisma.task.findFirst({
-            where: {
-                id: id
-            }
-        })
+        return TaskModel.findById(id)
     }
 
     public async findByOwner(ownerId: string, status: TaskStatus): Promise<Array<Task>> {
-        let where = { owner: ownerId, status: undefined }
+        let query = TaskModel.find()
+        query = query.where('owner').equals(ownerId)
         if (status) {
-            where.status = status
+            query = query.where('status').equals(status)
         }
-        return prisma.task.findMany({ where })
-    }
-
-    public async findByColunm(ownerId: string, columnId: string): Promise<Array<Task>> {
-        let where = {
-            NOT: {
-                status: TaskStatus.ARCHIVED
-            },
-            columnId: columnId,
-            owner: null
-        }
-        if (ownerId) {
-            where.owner = ownerId
-        }
-        return prisma.task.findMany({ where })
+        return query.exec()
     }
 
     public async findAll(status: TaskStatus): Promise<Array<Task>> {
+        let query = TaskModel.find()
         if (status) {
-            return prisma.task.findMany({
-                where: {
-                    status: status
-                }
-            })
+            query = query.where('status').equals(status)
         }
-        return prisma.task.findMany()
+        return query.exec()
     }
 
     public async changeStatus(id: string, status: TaskStatus): Promise<Task> {
-        return prisma.task.update({
-            where: {
-                id: id,
-            },
-            data: {
-                status: status,
-            },
+        const res = await TaskModel.updateOne({
+            '_id': id
+        }, {
+            'status': status
         })
+        if (res.modifiedCount === 1) {
+            return TaskModel.findById(id)
+        }
     }
 
     public async archive(id: string): Promise<Task> {
-        return prisma.task.update({
-            where: {
-                id: id,
-            },
-            data: {
-                status: TaskStatus.ARCHIVED,
-                archivedAt: new Date(),
-            },
+        const res = await TaskModel.updateOne({
+            '_id': id
+        }, {
+            'status': TaskStatus.ARCHIVED,
+            'archivedAt': new Date()
         })
+        if (res.modifiedCount === 1) {
+            return TaskModel.findById(id)
+        }
     }
 
-    public async moveToColumn(id: string, columnId: string): Promise<Task> {
-        return prisma.task.update({
-            where: {
-                id: id,
-            },
-            data: {
-                columnId: columnId
-            },
-        })
+    public async moveToColumn(id: string, columnId: string): Promise<Column> {
+        const task = await TaskModel.findById(id)
+        const res = await ColumnModel.
+            updateOne({ _id: columnId }, { '$addToSet': { tasks: task._id } })
+        if (res.matchedCount === 1) {
+            return ColumnModel.findById(columnId)
+        }
     }
 }
