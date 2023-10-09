@@ -34,7 +34,11 @@ https://docs.docker.com/get-docker/
 
 In vscode open your command palette and run `Dev Containers: Reopen in Container` and wait for it to finish 
 
-Use the same commands as for NodeJS CLI inside de devcontainer
+```sh
+npm i
+```
+
+Go to VScode RUN (shift+cmd+d) and run it
 
 reference: https://code.visualstudio.com/docs/devcontainers/containers 
 
