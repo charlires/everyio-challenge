@@ -57,7 +57,7 @@ When the docker-compose runs 3 users are created with the following email and ro
 These users are created when the mongodb container runs for the first time
 see: mongo-init.js
 
-To make a request authenticated with a user you just dend a http header `Authentication: user@every.io` you can use any of the above or create you own straight in mongodb.
+To make a request authenticated with a user you just dend a http header `Authorization: user@every.io` you can use any of the above or create you own straight in mongodb.
 
 There is graphql resolver to manage users.
 
