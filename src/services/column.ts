@@ -1,4 +1,4 @@
-import { Column, ColumnModel } from '../schemas/schemas';
+import { Column, ColumnModel } from '../schemas';
 
 export default class ColumnService {
 

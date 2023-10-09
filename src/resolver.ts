@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
 
-import { Column, Task, TaskStatus, User, UserRole } from './schemas/schemas';
+import { Column, Task, TaskStatus, User, UserRole } from './schemas';
 import ColumnService from './services/column';
 import TaskService from './services/task';
 

@@ -1,4 +1,4 @@
-import { User, UserModel } from "../schemas/schemas";
+import { User, UserModel } from "../schemas";
 
 export default class UserService {
 

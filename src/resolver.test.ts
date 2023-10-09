@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, jest } from '@jest/globals';
 
 import MainResolver, { errors } from './resolver';
-import { Column, Task, TaskStatus, User, UserRole } from './schemas/schemas';
+import { Column, Task, TaskStatus, User, UserRole } from './schemas';
 import ColumnService from './services/column';
 import TaskService from './services/task';
 jest.mock("./services/column")

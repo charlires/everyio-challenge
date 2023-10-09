@@ -19,7 +19,7 @@ To run this project you need to have nodejs18 installed and mongodb running in y
 ```sh
 npm i
 npm run build
-npm start
+MONGODB_HOST=YOUR_MONGODB_HOST npm start
 ```
 
 Run tests
@@ -41,10 +41,11 @@ reference: https://code.visualstudio.com/docs/devcontainers/containers
 ## General Notes
 
 ### GraphQL 
+You can find the graphql scheme [here](src/graphql.schema.ts)
 
 ### Unit tests
 For time contrains only unittest for the busines logic have been inplemented
-you can find them in [resolver.test.ts](src/resolver.test.ts)
+you can find them [here](src/resolver.test.ts)
 
 ### Authentication
 For simplicity in this challenge authentication and jwt token validation was omited
@@ -53,11 +54,16 @@ When the docker-compose runs 3 users are created with the following email and ro
 - jose@every@io - MEMBER
 - admin@every.io - MEMBER
 
-these users are created when the mongodb container runs for the first time
+These users are created when the mongodb container runs for the first time
 see: mongo-init.js
+
+To make a request authenticated with a user you just dend a http header `Authentication: user@every.io` you can use any of the above or create you own straight in mongodb.
+
+There is graphql resolver to manage users.
 
 # TODOs, Improvements, Most have:
 - add integration tests
 - add cors headers
 - add graphql mapper to return dates as rfc3999
 - add jwt token validation
+- add user resolver

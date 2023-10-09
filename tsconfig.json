@@ -21,22 +21,6 @@
     "experimentalDecorators": true,
     "types": [
       "node"
-    ],
-    // "paths": {
-    //   "@service/*": [
-    //     "./src/services/*"
-    //   ],
-    //   "@app/*": [
-    //     "./src/*"
-    //   ]
-    // },
-  },
-  // "include": [
-  //   "src",
-  // ],
-  // "ts-node": {
-  //   "require": [
-  //       "tsconfig-paths/register"
-  //   ]
-  // }
+    ]
+  }
 }

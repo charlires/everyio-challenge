@@ -1,4 +1,4 @@
-import { Column, ColumnModel, Task, TaskModel, TaskStatus } from '../schemas/schemas';
+import { Column, ColumnModel, Task, TaskModel, TaskStatus } from '../schemas';
 
 export default class TaskService {
 

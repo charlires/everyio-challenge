@@ -60,10 +60,6 @@ async function main() {
                     return { message: formattedError.message }
                 default:
                     return formattedError;
-                // return {
-                //     ...formattedError,
-                //     message: "Your input doesn't match the schema. Try double-checking it!",
-                // };
             }
         },
     });
@@ -96,7 +92,4 @@ main()
     .catch(async (e) => {
         logger.error(e)
         process.exit(1)
-    })
-    .finally(async () => {
-        // mongoose.disconnect()
     })
